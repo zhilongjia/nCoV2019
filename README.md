@@ -26,4 +26,8 @@ src/
     # Pathway analysis
     ./2.0_KEGG.R
 
+    # cogena analysis
+    ./2.1_cogena.R
+
+# log
 Created: Jan 28, 2020
