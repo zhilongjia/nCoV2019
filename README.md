@@ -2,6 +2,12 @@
 
 ## Transcriptonal Analysis of 2019-nCoV
 
+## todo
+    filter other genes except protein-coding genes
+    CMap/LINCS-based Drug repositioning analysis
+    Key Pathways
+    compare HIV drug genes and pathways with nCoV's
+
 ## Files: 
 
 data: 
@@ -14,11 +20,15 @@ documents:
 
 src/
 
+    # mapping
+    ./0.0.1_mapping_cmd.sh
+    
     # merge data and gene symbols
     ./0.1_preprocessing.R  
 
     # Differential Expression Analysis for three comparsion pairs
     ./1.0_DE.R 
+    ./1.0_DE_q0.001.R
 
     # norm all samples for PCA/Heatmap only. 
     ./1.1_norm3groups.R  
@@ -28,6 +38,7 @@ src/
 
     # cogena analysis
     ./2.1_cogena.R
+    ./2.3_cmap_lincs.R
 
 # log
 Created: Jan 28, 2020

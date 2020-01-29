@@ -21,7 +21,7 @@ readr::write_tsv(sample_count_df, "../results/all_genecounts.tsv")
 sample_meta <- readr::read_csv("../data/sample_meta.csv")
 
 
-save.image("../results/0.1_preprocessing.RData")
+save.image("../results/0.1_preprocessing_stage1.RData")
 
 ################################################################################
 # sample grouped
@@ -39,7 +39,7 @@ sample_count_mat <- as.data.frame(sample_count_df[,c(nCoV_samp, Heal_samp, pneu_
 rownames(sample_count_mat) <- sample_count_df$Geneid
 nlq_ensembl <- names(which(rowSums(sample_count_mat)!=0))
 
-# 55.43% of input gene IDs are fail to map
+# 56.39% of input gene IDs are fail to map
 symbol_ENTREZID <- clusterProfiler::bitr(gsub("\\..+", "", rownames(sample_count_mat) ), 
                                          fromType="ENSEMBL", toType=c("ENSEMBL", "SYMBOL"), OrgDb="org.Hs.eg.db", drop=TRUE)
 
