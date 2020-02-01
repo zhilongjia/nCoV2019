@@ -32,3 +32,5 @@ aa_df <- as.data.frame(sapply(aa, "length<-", max(lengths(aa))))
 readr::write_tsv(aa_df, path="../results/drug_gene_venn_res.tsv", na="")
 
 save.image("../results/3.1_drug_pathway.RData")
+
+
