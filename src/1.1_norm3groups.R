@@ -1,14 +1,18 @@
 
-load("../results/0.1_preprocessing.RData")
+# load("../results/0.1_preprocessing.RData")
+load("../results/sample_count_df_symbol.RData")
 library(edgeR)
 library(limma)
 ################################################################################
-# 3 groups
-sample_meta$Group2 <- sample_meta$Group
-sample_meta$Group2 <- gsub("nCoV","pneumonia", sample_meta$Group2)
-subsample_pheno <- dplyr::filter(sample_meta, Group2 %in% c("Healthy", "pneumonia") )
-subsample_pheno$Group2 <- factor(subsample_pheno$Group2, levels=c("Healthy", "pneumonia") )
-Expdesign <- model.matrix(~subsample_pheno$Group2)
+# consider 3 groups as 2 groups
+# subsample_pheno <- dplyr::filter(sample_meta, Group2 %in% c("Healthy", "Disease") )
+# subsample_pheno$Group2 <- factor(subsample_pheno$Group2, levels=c("Healthy", "Disease") )
+# Expdesign <- model.matrix(~subsample_pheno$Group2)
+
+g3_names <- c("Healthy", "pneumonia", "nCoV" )
+subsample_pheno <- dplyr::filter(sample_meta, Group1 %in% g3_names )
+subsample_pheno$Group1 <- factor(subsample_pheno$Group1, levels = g3_names )
+Expdesign <- model.matrix(~subsample_pheno$Group1)
 
 S_raw <- as.matrix(dplyr::select(sample_count_df_symbol, -SYMBOL) )
 rownames(S_raw) <- sample_count_df_symbol$SYMBOL
@@ -24,7 +28,9 @@ subsample_dge <- calcNormFactors(subsample_dge)
 v <- voom(subsample_dge, Expdesign, plot=FALSE, normalize="quantile")
 
 nCoV_pneu_Heal_norm_symbol_GE <- v$E
-boxplot(nCoV_pneu_Heal_norm_symbol_GE)
+
+par(mar=c(10,2,1,1))
+boxplot(nCoV_pneu_Heal_norm_symbol_GE[,c(nCoV_samp, Heal_samp, pneuVir_samp)], las=2)
 
 ################################################################################
 #PCA 3 groups
@@ -37,14 +43,50 @@ DEG_united <- unique(c(DEG_nCoV_Heal, DEG_pneu_Heal, DEG_nCoV_pneu))
 
 library(ggfortify)
 # only DEG_nCoV_Heal
-autoplot(prcomp(t(v$E[DEG_nCoV_Heal,]), scale=T), 
-         data=subsample_pheno, colour = "Group", 
+autoplot(prcomp(t(v$E[DEG_nCoV_Heal,]), scale=F), x=1,y=2,
+         data=subsample_pheno, colour = "Group1", 
+         size = 5, label = F, label.colour="black", ts.colour="black" )
+
+autoplot(prcomp(t(v$E[DEG_nCoV_Heal,]), scale=F), x=1,y=3,
+         data=subsample_pheno, colour = "Group1", 
+         size = 5, label = F, label.colour="black", ts.colour="black" )
+
+autoplot(prcomp(t(v$E[DEG_nCoV_Heal,]), scale=F), x=1,y=2,
+         data=subsample_pheno, colour = "Group3", 
+         size = 5, label = F, label.colour="black", ts.colour="black" )
+
+autoplot(prcomp(t(v$E[DEG_nCoV_Heal,]), scale=F), x=1,y=2,
+         data=subsample_pheno, colour = "virus", 
+         size = 5, label = F, label.colour="black", ts.colour="black" )
+
+autoplot(prcomp(t(v$E[DEG_nCoV_Heal,]), scale=F), 
+         data=subsample_pheno, colour = 'Abundance_among_ABFV', 
          size = 8, label = TRUE, label.colour="black", ts.colour="black" )
 
 # all union genes
-autoplot(prcomp(t(v$E[intersect(DEG_united, rownames(v$E) ),]), scale=T), 
-         data=subsample_pheno, colour = "Group", 
-         size = 8, label = TRUE, label.colour="black", ts.colour="black" )
+autoplot(prcomp(t(v$E[intersect(DEG_united, rownames(v$E) ),]), scale=F), 
+         data=subsample_pheno, colour = "Group1", 
+         size = 5, label = F, label.colour="black", ts.colour="black" )
+
+autoplot(prcomp(t(v$E[intersect(DEG_united, rownames(v$E) ),]), scale=F), x=1,y=3,
+         data=subsample_pheno, colour = "Group1", 
+         size = 5, label = F, label.colour="black", ts.colour="black" )
+
+autoplot(prcomp(t(v$E[intersect(DEG_united, rownames(v$E) ),]), scale=F), x=1,y=3,
+         data=subsample_pheno, colour = "virus", 
+         size = 5, label = F, label.colour="black", ts.colour="black" )
+
+gplots::heatmap.2(v$E[DEG_nCoV_Heal,], trace = "none", 
+                  col="bluered", scale="row", labRow=FALSE,
+                  srtCol=60, keysize=1, Colv=TRUE,
+                  ylab=paste(nrow(v$E[DEG_nCoV_Heal,]), "DE Genes"))
+
+
+gplots::heatmap.2(v$E[intersect(DEG_united, rownames(v$E) ),], trace = "none", 
+                  col="bluered", scale="row", labRow=FALSE,
+                  srtCol=60, keysize=1, Colv=TRUE,
+                  ylab=paste(nrow(v$E[intersect(DEG_united, rownames(v$E) ),]), "DE Genes"), 
+                  margins = c(10, 8))
 
 readr::write_tsv(as.data.frame(v$E), path="../results/nCoV_pneu_Heal_norm_symbol_GE.tsv")
 
