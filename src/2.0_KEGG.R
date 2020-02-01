@@ -1,16 +1,40 @@
 
 load("../results/DEA_list.RData")
-source("~/Dropbox/zzz.R")
+load("../results/DEA_pneu_list.RData")
 
+symbol2entrezID <- function(gene_symbols) {
+    symbol_ENTREZID <- clusterProfiler::bitr(gene_symbols, fromType="SYMBOL", toType="ENTREZID", OrgDb="org.Hs.eg.db")
+    return(symbol_ENTREZID$ENTREZID)
+}
+
+
+DEA_list <- c(DEA_list[["limma_UPDN"]], DEA_pneu_list[["limma_UPDN"]])
+
+c1 <- c("nCoV_Heal_UP", "nCoV_Heal_DN", 
+        "pneu_Heal_UP", "pneu_Heal_DN",
+        "pneuVir_Heal_UP", "pneuVir_Heal_DN",
+        "pneuBac_Heal_UP", "pneuBac_Heal_DN")
+c1 <- c("nCoV_Heal_UP", "nCoV_Heal_DN", 
+        "pneu_Heal_UP", "pneu_Heal_DN")
+
+c1 <-  c("nCoV_Heal_UP", "nCoV_Heal_DN",
+         "pneuVir_Heal_UP", "pneuVir_Heal_DN")
+
+c1 <- c("pneuVir_Heal_UP", "pneuVir_Heal_DN",
+        "pneuBac_Heal_UP", "pneuBac_Heal_DN")
+    
 ################################################################################
-# Pathway & GO analysis of DEG at each timepoint
+# Pathway & GO analysis of DEG
 library(clusterProfiler)
-genesEntrezID_3g <- sapply(DEA_list[["limma_UPDN"]], symbol2entrezID )
+genesEntrezID_3g <- sapply(DEA_list[c1], symbol2entrezID )
+sapply(genesEntrezID_3g, length)
 
 genesEntrezID_3g_KEGG <- compareCluster(genesEntrezID_3g, fun='enrichKEGG')
-dotplot(genesEntrezID_3g_KEGG, showCategory=30)
+dotplot(genesEntrezID_3g_KEGG, showCategory=10)
 
-genesEntrezID_3g_GO <- compareCluster(genesEntrezID_3g, fun='enrichGO', OrgDb='org.Hs.eg.db')
-dotplot(genesEntrezID_3g_GO, showCategory=30)
+genesEntrezID_3g_BP <- compareCluster(genesEntrezID_3g, fun='enrichGO', OrgDb='org.Hs.eg.db', ont="BP")
+dotplot(genesEntrezID_3g_BP, showCategory=10)
 
+
+save.image("../results/2.0_KEGG_c1.RData")
 save.image("../results/2.0_KEGG.RData")
