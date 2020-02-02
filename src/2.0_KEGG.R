@@ -32,6 +32,11 @@ sapply(genesEntrezID_3g, length)
 genesEntrezID_3g_KEGG <- compareCluster(genesEntrezID_3g, fun='enrichKEGG')
 dotplot(genesEntrezID_3g_KEGG, showCategory=10)
 
+library(ReactomePA)
+genesEntrezID_3g_Reactome <- compareCluster(genesEntrezID_3g, fun='enrichPathway')
+dotplot(genesEntrezID_3g_Reactome, showCategory=10)
+
+
 genesEntrezID_3g_BP <- compareCluster(genesEntrezID_3g, fun='enrichGO', OrgDb='org.Hs.eg.db', ont="BP")
 dotplot(genesEntrezID_3g_BP, showCategory=10)
 
