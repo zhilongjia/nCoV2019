@@ -78,7 +78,7 @@ venn::venn(nCoV_pneu_SARS_list, ilab=TRUE, zcolor = "style",
 
 
 ################
-# innate heatmap
+# SARS heatmap
 overlapped_SARS <- intersect(c(nCoV_pneu_SARS_list$nCoV_Heal, nCoV_pneu_SARS_list$pneu_Heal, nCoV_pneu_SARS_list$pneuVir_Heal), 
                                SARS_gene$t_name)
 
@@ -101,4 +101,16 @@ gplots::heatmap.2(as.matrix(nCoV_pneu_SARS_logFC_df), trace = "none",
                   ylab=paste(nrow(nCoV_pneu_SARS_logFC_df), " Genes"), 
                   margins = c(12, 6))
 
+################################################################################
+################################################################################
+SARS_gene1 <- readr::read_tsv("../data/SARS_up_regulated_gene_final.ID", col_names = FALSE)
 
+load("../results/nCoV_pneu_Heal_norm_symbol_GE.RData")
+
+SARS_gene1_exp <- nCoV_pneu_Heal_norm_symbol_GE[intersect(rownames(nCoV_pneu_Heal_norm_symbol_GE), SARS_gene1$X2),]
+
+gplots::heatmap.2(SARS_gene1_exp, trace = "none", 
+                  col="bluered", scale="row", 
+                  srtCol=50, keysize=1, Colv=T, Rowv=F,
+                  ylab=paste(nrow(SARS_gene1_exp), " Genes"), 
+                  margins = c(12, 6))
