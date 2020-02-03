@@ -2,7 +2,9 @@
 
 ################################################################################
 load("../results/DEA_list.RData")
-
+load("../results/DEA_pneu_list.RData")
+DEA_list[["limma_DEA"]] <- c(DEA_list[["limma_DEA"]], DEA_pneu_list[["limma_DEA"]])
+DEA_list[["limma_DE"]] <- c(DEA_list[["limma_DE"]], DEA_pneu_list[["limma_DE"]])
 
 ################################################################################
 # filter lower logfc genes (nCoV_Heal)
@@ -14,7 +16,11 @@ readr::write_csv(nCoV_logFC, path="../results/nCoV_logFC6.csv")
 #
 pneu_logFC <- dplyr::filter(DEA_list[["limma_DEA"]][["pneu_Heal"]], abs(logFC)>=3)
 readr::write_csv(pneu_logFC, path="../results/pneu_logFC3.csv")
+
 #
+pneuVir_logFC <- dplyr::filter(DEA_list[["limma_DEA"]][["pneuVir_Heal"]], abs(logFC)>=3)
+readr::write_csv(pneuVir_logFC, path="../results/pneuVir_logFC3.csv")
+
 
 nCoV_Heal_DE <- DEA_list[["limma_DE"]][["nCoV_Heal"]][nCoV_logFC$nCoV_Heal,]
 nCoV_Heal_pheno <- DEA_list[["subsample_pheno"]][["nCoV_Heal"]] 
