@@ -1,4 +1,5 @@
-load("../results/DEA_list.RData")
+
+# load("../results/DEA_list.RData")
 load("../results/DEA_pneu_list.RData")
 
 ################################################################################
