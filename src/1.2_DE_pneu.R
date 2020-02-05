@@ -64,7 +64,7 @@ for (comp_var in names(comp2groups) ) {
     
     # only protein_coding genes
     limma_DEA <- dplyr::filter(limma_res, adj.P.Val<=0.05, abs(logFC)>=2, type=="protein_coding" )
-    readr::write_tsv(limma_DEA, paste0("../results/limma/", comp_var, "_limma_res.tsv") )
+    readr::write_csv(limma_DEA, paste0("../results/limma/", comp_var, "_limma_res.csv") )
     
     limma_UP <- dplyr::filter(limma_DEA, logFC>0)[[comp_var]]
     limma_DN <- dplyr::filter(limma_DEA, logFC<0)[[comp_var]]
@@ -127,4 +127,9 @@ aa_df <- as.data.frame(sapply(aa, "length<-", max(lengths(aa))))
 readr::write_csv(aa_df, path="../results/venn/DEG_venn_res.csv", na="")
 
 DEA_list <- DEA_pneu_list
-save(S_raw, DEA_list, sample_meta, file="../results/DEA_pneu_list.RData")
+
+pal <- list()
+pal$d <- scales::hue_pal()(4)
+pal$s <- colorRampPalette(rev(RColorBrewer::brewer.pal(n = 7, name = "RdYlBu")))(100)
+
+save(pal, S_raw, DEA_list, sample_meta, file="../results/DEA_pneu_list.RData")
