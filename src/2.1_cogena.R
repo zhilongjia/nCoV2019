@@ -77,4 +77,28 @@ heatmapPEI(drugDN_result, "h", "3", maintitle="nCoV_Heal", add2=TRUE,
 save.image("../results/2.1_cogena_CmapDN.RData")
 
 #########################################################################
+annoGMT <- "LINCS_L1000_Chem_Pert_up.gmt";
+annofile <- system.file("extdata", annoGMT, package="cogena")
+L1drugUP_result <- clEnrich(genecl_result, annofile=annofile, sampleLabel=sampleLabel, ncore=1)
+save.image("../results/2.1_cogena_LincsUP.RData")
+
+heatmapPEI(L1drugUP_result, "h", "3", maintitle="nCoV_Heal", add2=TRUE,
+           CutoffNumGeneset=20, orderMethod = "2", printGS = TRUE)
+
+heatmapPEI(L1drugUP_result, "h", "3", maintitle="nCoV_Heal", add2=TRUE,
+           CutoffNumGeneset=20, orderMethod = "3", printGS = TRUE)
+
+heatmapPEI(L1drugUP_result, "h", "3", maintitle="nCoV_Heal", add2=TRUE,
+           CutoffNumGeneset=20, orderMethod = "Down", printGS = TRUE)
+
+
+#########################################################################
+annoGMT <- "LINCS_L1000_Chem_Pert_down.gmt";
+annofile <- system.file("extdata", annoGMT, package="cogena")
+L1drugDN_result <- clEnrich(genecl_result, annofile=annofile, sampleLabel=sampleLabel, ncore=1)
+save.image("../results/2.1_cogena_LincsDN.RData")
+
+heatmapPEI(L1drugDN_result, "h", "3", maintitle="nCoV_Heal", add2=TRUE,
+           CutoffNumGeneset=20, orderMethod = "1", printGS = TRUE)
+
 
