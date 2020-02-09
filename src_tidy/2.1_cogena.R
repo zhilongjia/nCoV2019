@@ -52,13 +52,13 @@ annoGMT <- "CmapUp100.gmt.xz";
 annofile <- system.file("extdata", annoGMT, package="cogena")
 drugUP_result <- clEnrich(genecl_result, annofile=annofile, sampleLabel=sampleLabel, ncore=ncore)
 
-heatmapPEI(drugUP_result, "h", "3", maintitle="nCoV_Heal", add2=TRUE,
+heatmapPEI(drugUP_result, "h", "3", maintitle="nCoV_Heal", add2=FALSE,
            CutoffNumGeneset=20, orderMethod = "2", printGS = TRUE)
 
-heatmapPEI(drugUP_result, "h", "3", maintitle="nCoV_Heal", add2=TRUE,
+heatmapPEI(drugUP_result, "h", "3", maintitle="nCoV_Heal", add2=FALSE,
            CutoffNumGeneset=20, orderMethod = "3", printGS = TRUE)
 
-heatmapPEI(drugUP_result, "h", "3", maintitle="nCoV_Heal", add2=TRUE,
+heatmapPEI(drugUP_result, "h", "3", maintitle="nCoV_Heal", add2=FALSE,
            CutoffNumGeneset=20, orderMethod = "Down", printGS = TRUE)
 
 save.image("../results/2.1_cogena_CmapUP.RData")
@@ -69,7 +69,7 @@ annoGMT <- "CmapDn100.gmt.xz";
 annofile <- system.file("extdata", annoGMT, package="cogena")
 drugDN_result <- clEnrich(genecl_result, annofile=annofile, sampleLabel=sampleLabel, ncore=ncore)
 
-heatmapPEI(drugDN_result, "h", "3", maintitle="nCoV_Heal", add2=TRUE,
+heatmapPEI(drugDN_result, "h", "3", maintitle="nCoV_Heal", add2=FALSE,
            CutoffNumGeneset=20, orderMethod = "1", printGS = TRUE)
 
 heatmapPEI(drugDN_result, "h", "3", maintitle="nCoV_Heal", add2=TRUE,
