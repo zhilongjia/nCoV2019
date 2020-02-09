@@ -16,5 +16,5 @@
 
 
 # heatmap and venn
-3.3_DEG_heatmap.R 
-
+./3.3_DEG_heatmap.R 
+./3.1_drug_pathway.R
