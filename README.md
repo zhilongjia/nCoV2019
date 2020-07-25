@@ -40,5 +40,9 @@ src/
     ./2.1_cogena.R
     ./2.3_cmap_lincs.R
 
+# Citation
+
+Zhou, Z., Ren, L., Zhang, L., Zhong, J., Xiao, Y., Jia, Z., Guo, L., Yang, J., Wang, C., Jiang, S. and Yang, D., 2020. Heightened innate immune responses in the respiratory tract of COVID-19 patients. Cell Host & Microbe. https://doi.org/10.1016/j.chom.2020.04.017
+
 # log
 Created: Jan 28, 2020
